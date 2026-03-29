@@ -20,5 +20,7 @@ Requirements: Node.js 20+ and Python 3.
    - `npm test`
 2. Start the local web server:
    - `npm start`
+   - If port `4173` is busy, use a different one:
+     - `PORT=4174 npm start`
 3. Open:
-   - `http://localhost:4173`
+   - `http://localhost:4173` (or the port you selected)
