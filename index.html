@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choso · Gestión de tareas de casa</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <h1>Choso</h1>
+      <p>Gestión justa de tareas del hogar con carga visible y decisiones con datos.</p>
+    </header>
+
+    <main class="layout">
+      <section class="panel">
+        <div class="panel-header">
+          <h2 id="week-title">Semana</h2>
+          <div class="week-actions">
+            <button id="previous-week" type="button" class="btn-secondary">Semana anterior</button>
+            <button id="next-week" type="button" class="btn-secondary">Semana siguiente</button>
+          </div>
+        </div>
+        <p id="week-task-count" class="muted"></p>
+        <div id="assignment-list" class="card-grid"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h2>Carga de trabajo (8 semanas)</h2>
+          <button id="reset-data" type="button" class="btn-danger">Reset histórico</button>
+        </div>
+        <div id="load-summary" class="summary"></div>
+        <h3>Mapa de calor</h3>
+        <div id="heatmap" class="heatmap"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Histórico de tareas</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Semana</th>
+                <th>Tarea</th>
+                <th>Hecha por</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
