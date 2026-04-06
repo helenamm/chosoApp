@@ -10,8 +10,34 @@
     <header class="hero">
       <div class="hero-brand">
         <div class="hero-logo" aria-hidden="true">
-          <span class="logo-house">⌂</span>
-          <span class="logo-spark">✦</span>
+          <svg
+            class="hero-logo-svg"
+            viewBox="0 0 64 64"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+          >
+            <defs>
+              <linearGradient id="chosoLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="100%" stop-color="#d4e6ff" />
+              </linearGradient>
+            </defs>
+            <rect x="6" y="6" width="52" height="52" rx="15" fill="url(#chosoLogoGradient)" />
+            <path
+              d="M17 33L32 20L47 33V47C47 48.66 45.66 50 44 50H20C18.34 50 17 48.66 17 47V33Z"
+              fill="#0d6efd"
+              opacity="0.95"
+            />
+            <path
+              d="M24 38L30 44L41 30"
+              fill="none"
+              stroke="#ffffff"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <circle cx="48" cy="16" r="4" fill="#ffe57f" />
+          </svg>
         </div>
         <h1>Choso App</h1>
       </div>
