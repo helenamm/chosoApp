@@ -16,9 +16,15 @@
       <section class="panel">
         <div class="panel-header">
           <h2 id="week-title">Semana</h2>
-          <div class="week-actions">
-            <button id="previous-week" type="button" class="btn-secondary">Semana anterior</button>
-            <button id="next-week" type="button" class="btn-secondary">Semana siguiente</button>
+          <div class="week-controls">
+            <div class="week-actions">
+              <button id="previous-week" type="button" class="btn-secondary">Semana anterior</button>
+              <button id="next-week" type="button" class="btn-secondary">Semana siguiente</button>
+            </div>
+            <label for="assignee-filter" class="assignee-filter">
+              Ver tareas de
+              <select id="assignee-filter"></select>
+            </label>
           </div>
         </div>
         <p id="week-task-count" class="muted"></p>

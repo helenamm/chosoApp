@@ -13,6 +13,7 @@ import {
 
 const state = loadState();
 let selectedWeekOffset = 0;
+let selectedAssignee = "all";
 
 const weekTitleEl = document.getElementById("week-title");
 const weekTaskCountEl = document.getElementById("week-task-count");
@@ -23,6 +24,25 @@ const historyBodyEl = document.getElementById("history-body");
 const previousWeekButton = document.getElementById("previous-week");
 const nextWeekButton = document.getElementById("next-week");
 const resetDataButton = document.getElementById("reset-data");
+const assigneeFilterEl = document.getElementById("assignee-filter");
+
+function initializeAssigneeFilter() {
+  assigneeFilterEl.innerHTML = "";
+
+  const allOption = document.createElement("option");
+  allOption.value = "all";
+  allOption.textContent = "Todas";
+  assigneeFilterEl.appendChild(allOption);
+
+  state.members.forEach((member) => {
+    const option = document.createElement("option");
+    option.value = member.id;
+    option.textContent = member.name;
+    assigneeFilterEl.appendChild(option);
+  });
+
+  assigneeFilterEl.value = selectedAssignee;
+}
 
 function getCompletedAssignmentKeys(weekId) {
   const completions = getWeekCompletions(state, weekId);
@@ -32,11 +52,20 @@ function getCompletedAssignmentKeys(weekId) {
 function renderAssignments() {
   const weekId = getWeekId(selectedWeekOffset);
   const weekLabel = getWeekLabel(weekId);
-  const assignments = generateWeekAssignments(selectedWeekOffset, state);
+  const allAssignments = generateWeekAssignments(selectedWeekOffset, state);
+  const assignments =
+    selectedAssignee === "all"
+      ? allAssignments
+      : allAssignments.filter((assignment) => assignment.assignedTo === selectedAssignee);
   const doneKeys = getCompletedAssignmentKeys(weekId);
 
   weekTitleEl.textContent = `Semana ${weekLabel}`;
-  weekTaskCountEl.textContent = `${assignments.length} tareas programadas`;
+  weekTaskCountEl.textContent =
+    selectedAssignee === "all"
+      ? `${assignments.length} tareas programadas`
+      : `${assignments.length} tareas para ${
+          state.members.find((member) => member.id === selectedAssignee)?.name ?? "persona"
+        }`;
   assignmentListEl.innerHTML = "";
 
   if (!assignments.length) {
@@ -183,6 +212,11 @@ nextWeekButton.addEventListener("click", () => {
   renderAssignments();
 });
 
+assigneeFilterEl.addEventListener("change", () => {
+  selectedAssignee = assigneeFilterEl.value;
+  renderAssignments();
+});
+
 resetDataButton.addEventListener("click", () => {
   const answer = window.confirm("¿Seguro que quieres borrar el histórico?");
   if (!answer) {
@@ -193,4 +227,5 @@ resetDataButton.addEventListener("click", () => {
   renderAll();
 });
 
+initializeAssigneeFilter();
 renderAll();
