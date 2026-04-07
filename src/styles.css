@@ -237,14 +237,26 @@ button:disabled {
 
 .heatmap-row {
   display: grid;
-  grid-template-columns: 84px 1fr;
+  grid-template-columns: 150px 1fr;
   align-items: center;
   gap: 0.45rem;
 }
 
 .heatmap-label {
+  display: inline-flex;
+  justify-content: space-between;
+  gap: 0.4rem;
+  width: 100%;
   font-size: 0.9rem;
   color: var(--muted);
+}
+
+.heatmap-name {
+  font-weight: 600;
+}
+
+.heatmap-stats {
+  font-size: 0.84rem;
 }
 
 .heatmap-cells {

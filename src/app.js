@@ -20,7 +20,6 @@ const selectedCompleterByAssignment = {};
 const weekTitleEl = document.getElementById("week-title");
 const weekTaskCountEl = document.getElementById("week-task-count");
 const assignmentListEl = document.getElementById("assignment-list");
-const loadSummaryEl = document.getElementById("load-summary");
 const heatmapEl = document.getElementById("heatmap");
 const historyBodyEl = document.getElementById("history-body");
 const previousWeekButton = document.getElementById("previous-week");
@@ -165,29 +164,10 @@ function renderAssignments() {
   });
 }
 
-function renderLoadSummary() {
-  const summary = calculateLoadSummary(state, 8);
-  loadSummaryEl.innerHTML = "";
-  if (summary.totalPoints === 0) {
-    const empty = document.createElement("p");
-    empty.className = "empty-state";
-    empty.textContent = "Sin actividad en las últimas 8 semanas.";
-    loadSummaryEl.appendChild(empty);
-    return;
-  }
-  summary.byMember.forEach((item) => {
-    const row = document.createElement("div");
-    row.className = "summary-row";
-    row.innerHTML = `
-      <span>${item.memberName}</span>
-      <span>${item.points} pts · ${item.percentage}%</span>
-    `;
-    loadSummaryEl.appendChild(row);
-  });
-}
-
 function renderHeatmap() {
   const data = buildHeatmapData(state, 8);
+  const summary = calculateLoadSummary(state, 8);
+  const summaryByMemberId = new Map(summary.byMember.map((item) => [item.memberId, item]));
   const allPoints = data.flatMap((member) => member.pointsByWeek.map((point) => point.points));
   const nonZeroPoints = allPoints.filter((value) => value > 0);
   const minNonZero = nonZeroPoints.length ? Math.min(...nonZeroPoints) : 1;
@@ -199,7 +179,14 @@ function renderHeatmap() {
 
     const label = document.createElement("span");
     label.className = "heatmap-label";
-    label.textContent = member.memberName;
+    const memberSummary = summaryByMemberId.get(member.memberId);
+    const labelName = document.createElement("span");
+    labelName.className = "heatmap-name";
+    labelName.textContent = member.memberName;
+    const labelStats = document.createElement("span");
+    labelStats.className = "heatmap-stats";
+    labelStats.textContent = `${memberSummary?.points || 0} pts · ${memberSummary?.percentage || 0}%`;
+    label.append(labelName, labelStats);
 
     const cells = document.createElement("div");
     cells.className = "heatmap-cells";
@@ -241,7 +228,6 @@ function renderHistory() {
 
 function renderAll() {
   renderAssignments();
-  renderLoadSummary();
   renderHeatmap();
   renderHistory();
 }
