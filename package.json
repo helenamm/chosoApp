@@ -1,0 +1,10 @@
+{
+  "name": "choso-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "start": "PORT=${PORT:-4173}; python3 -m http.server \"$PORT\""
+  }
+}

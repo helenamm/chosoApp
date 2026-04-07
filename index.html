@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choso App · Gestión de tareas de casa</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-brand">
+        <div class="hero-logo" aria-hidden="true">
+          <svg
+            class="hero-logo-svg"
+            viewBox="0 0 64 64"
+            xmlns="http://www.w3.org/2000/svg"
+            role="img"
+          >
+            <defs>
+              <linearGradient id="chosoLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="100%" stop-color="#d4e6ff" />
+              </linearGradient>
+            </defs>
+            <rect x="6" y="6" width="52" height="52" rx="15" fill="url(#chosoLogoGradient)" />
+            <path
+              d="M17 33L32 20L47 33V47C47 48.66 45.66 50 44 50H20C18.34 50 17 48.66 17 47V33Z"
+              fill="#0d6efd"
+              opacity="0.95"
+            />
+            <path
+              d="M24 38L30 44L41 30"
+              fill="none"
+              stroke="#ffffff"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <circle cx="48" cy="16" r="4" fill="#ffe57f" />
+          </svg>
+        </div>
+        <h1>Choso App</h1>
+      </div>
+    </header>
+
+    <main class="layout">
+      <div class="dashboard-column dashboard-right">
+        <section class="panel">
+          <div class="panel-header">
+            <h2 id="week-title">Semana</h2>
+            <div class="week-controls">
+              <div class="week-actions">
+                <button id="previous-week" type="button" class="btn-secondary">Semana anterior</button>
+                <button id="next-week" type="button" class="btn-secondary">Semana siguiente</button>
+              </div>
+              <label for="assignee-filter" class="assignee-filter">
+                Ver tareas de
+                <select id="assignee-filter"></select>
+              </label>
+            </div>
+          </div>
+          <p id="week-task-count" class="muted"></p>
+          <div id="assignment-list" class="card-grid"></div>
+        </section>
+      </div>
+
+      <div class="dashboard-column dashboard-left">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Carga de trabajo (8 semanas)</h2>
+            <button id="reset-data" type="button" class="btn-danger">Reset histórico</button>
+          </div>
+          <h3>Mapa de calor</h3>
+          <div id="heatmap" class="heatmap"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Histórico de tareas</h2>
+            <button id="add-task-button" type="button" class="btn-secondary">Añadir tarea</button>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Semana</th>
+                  <th>Tarea</th>
+                  <th>Hecha por</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody id="history-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div id="task-modal" class="modal-overlay" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+        <h3 id="task-modal-title">Nueva tarea</h3>
+        <form id="add-task-form" class="task-form">
+          <label for="task-description-input">Descripción de tarea</label>
+          <input
+            id="task-description-input"
+            name="description"
+            type="text"
+            required
+            maxlength="100"
+            placeholder="Ej: Limpiar ventanas"
+          />
+
+          <label for="task-emoji-input">Emoji</label>
+          <input id="task-emoji-input" name="icon" type="text" maxlength="4" value="🧼" />
+
+          <label for="task-frequency-input">Frecuencia (semanas)</label>
+          <input id="task-frequency-input" name="frequencyWeeks" type="number" min="1" value="1" />
+
+          <label for="task-weight-input">Peso de la tarea</label>
+          <input id="task-weight-input" name="points" type="number" min="1" max="10" value="1" />
+
+          <div class="task-form-actions">
+            <button id="close-task-modal-button" type="button" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary">Guardar tarea</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
