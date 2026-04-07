@@ -65,10 +65,10 @@ function renderAssignments() {
   weekTitleEl.textContent = `Semana ${weekLabel}`;
   weekTaskCountEl.textContent =
     selectedAssignee === "all"
-      ? `${assignments.length} tareas programadas`
+      ? `${assignments.length} tareas programadas para esta semana`
       : `${assignments.length} tareas para ${
           state.members.find((member) => member.id === selectedAssignee)?.name ?? "persona"
-        }`;
+        } esta semana`;
   assignmentListEl.innerHTML = "";
 
   if (!assignments.length) {
