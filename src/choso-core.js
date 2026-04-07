@@ -249,6 +249,20 @@ function buildHeatmapData(state, weeks = 8, fromDate = new Date()) {
   });
 }
 
+function getHeatmapColor(points, maxPoints) {
+  if (points <= 0 || maxPoints <= 0) {
+    return "#ffffff";
+  }
+  const ratio = Math.min(1, Math.max(0, points / maxPoints));
+  if (ratio >= 1) {
+    return "#dc3545";
+  }
+  const hue = Math.round(120 * (1 - ratio)); // verde (120) -> rojo (0)
+  const saturation = 70;
+  const lightness = Math.round(90 - ratio * 40); // clarito en baja carga
+  return `hsl(${hue} ${saturation}% ${lightness}%)`;
+}
+
 function formatDateTime(isoString) {
   return new Date(isoString).toLocaleString("es-ES");
 }
@@ -267,5 +281,6 @@ export {
   getWeekCompletions,
   calculateLoadSummary,
   buildHeatmapData,
+  getHeatmapColor,
   formatDateTime,
 };

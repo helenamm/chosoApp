@@ -8,6 +8,7 @@ import {
   getWeekCompletions,
   calculateLoadSummary,
   buildHeatmapData,
+  getHeatmapColor,
   formatDateTime,
 } from "./choso-core.js";
 
@@ -205,10 +206,8 @@ function renderHeatmap() {
 
     member.pointsByWeek.forEach((weekPoint) => {
       const cell = document.createElement("div");
-      const intensity = weekPoint.points / maxPoints;
-      const alpha = weekPoint.points === 0 ? 0.08 : 0.2 + intensity * 0.8;
       cell.className = "heatmap-cell";
-      cell.style.backgroundColor = `rgba(13, 110, 253, ${alpha.toFixed(2)})`;
+      cell.style.backgroundColor = getHeatmapColor(weekPoint.points, maxPoints);
       cell.title = `${member.memberName} · ${weekPoint.weekId} · ${weekPoint.points} pts`;
       cells.appendChild(cell);
     });
