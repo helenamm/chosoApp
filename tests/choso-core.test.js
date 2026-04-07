@@ -7,7 +7,7 @@ import {
   markAssignmentDone,
   calculateLoadSummary,
   buildHeatmapData,
-  getHeatmapCellColor,
+  getHeatmapColor,
 } from "../src/choso-core.js";
 
 test("generateWeekAssignments rotates who starts each week", () => {
@@ -126,8 +126,8 @@ test("generateWeekAssignments includes icon per task", () => {
   assert.ok(week0[0].taskIcon.length > 0);
 });
 
-test("getHeatmapCellColor uses white -> green -> red scale", () => {
-  assert.equal(getHeatmapCellColor(0, 10), "#ffffff");
-  assert.equal(getHeatmapCellColor(2, 10), "#d4f5df");
-  assert.equal(getHeatmapCellColor(10, 10), "#dc3545");
+test("getHeatmapColor uses white -> green -> red scale", () => {
+  assert.equal(getHeatmapColor(0, 10), "#ffffff");
+  assert.equal(getHeatmapColor(2, 10), "hsl(96 70% 82%)");
+  assert.equal(getHeatmapColor(10, 10), "#dc3545");
 });
