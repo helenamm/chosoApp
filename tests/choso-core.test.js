@@ -127,7 +127,7 @@ test("generateWeekAssignments includes icon per task", () => {
 });
 
 test("getHeatmapColor uses white -> green -> red scale", () => {
-  assert.equal(getHeatmapColor(0, 10), "#ffffff");
-  assert.equal(getHeatmapColor(2, 10), "hsl(96 70% 82%)");
-  assert.equal(getHeatmapColor(10, 10), "#dc3545");
+  assert.equal(getHeatmapColor(0, 1, 5), "#ffffff");
+  assert.equal(getHeatmapColor(1, 1, 5), "#d4f5df");
+  assert.equal(getHeatmapColor(5, 1, 5), "#dc3545");
 });

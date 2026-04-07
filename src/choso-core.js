@@ -249,18 +249,26 @@ function buildHeatmapData(state, weeks = 8, fromDate = new Date()) {
   });
 }
 
-function getHeatmapColor(points, maxPoints) {
+function getHeatmapColor(points, minNonZeroPoints, maxPoints) {
   if (points <= 0 || maxPoints <= 0) {
     return "#ffffff";
   }
-  const ratio = Math.min(1, Math.max(0, points / maxPoints));
-  if (ratio >= 1) {
+  if (maxPoints <= minNonZeroPoints) {
     return "#dc3545";
   }
-  const hue = Math.round(120 * (1 - ratio)); // verde (120) -> rojo (0)
-  const saturation = 70;
-  const lightness = Math.round(90 - ratio * 40); // clarito en baja carga
-  return `hsl(${hue} ${saturation}% ${lightness}%)`;
+  if (points <= minNonZeroPoints) {
+    return "#d4f5df";
+  }
+  if (points >= maxPoints) {
+    return "#dc3545";
+  }
+  const ratio = (points - minNonZeroPoints) / (maxPoints - minNonZeroPoints);
+  const start = { r: 212, g: 245, b: 223 }; // verde clarito
+  const end = { r: 220, g: 53, b: 69 }; // rojo
+  const r = Math.round(start.r + (end.r - start.r) * ratio);
+  const g = Math.round(start.g + (end.g - start.g) * ratio);
+  const b = Math.round(start.b + (end.b - start.b) * ratio);
+  return `rgb(${r}, ${g}, ${b})`;
 }
 
 function formatDateTime(isoString) {

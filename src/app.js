@@ -188,10 +188,10 @@ function renderLoadSummary() {
 
 function renderHeatmap() {
   const data = buildHeatmapData(state, 8);
-  const maxPoints = Math.max(
-    1,
-    ...data.flatMap((member) => member.pointsByWeek.map((point) => point.points)),
-  );
+  const allPoints = data.flatMap((member) => member.pointsByWeek.map((point) => point.points));
+  const nonZeroPoints = allPoints.filter((value) => value > 0);
+  const minNonZero = nonZeroPoints.length ? Math.min(...nonZeroPoints) : 1;
+  const maxPoints = nonZeroPoints.length ? Math.max(...nonZeroPoints) : 1;
   heatmapEl.innerHTML = "";
   data.forEach((member) => {
     const memberRow = document.createElement("div");
@@ -207,7 +207,7 @@ function renderHeatmap() {
     member.pointsByWeek.forEach((weekPoint) => {
       const cell = document.createElement("div");
       cell.className = "heatmap-cell";
-      cell.style.backgroundColor = getHeatmapColor(weekPoint.points, maxPoints);
+      cell.style.backgroundColor = getHeatmapColor(weekPoint.points, minNonZero, maxPoints);
       cell.title = `${member.memberName} · ${weekPoint.weekId} · ${weekPoint.points} pts`;
       cells.appendChild(cell);
     });
