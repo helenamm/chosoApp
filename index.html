@@ -44,50 +44,54 @@
     </header>
 
     <main class="layout">
-      <section class="panel">
-        <div class="panel-header">
-          <h2 id="week-title">Semana</h2>
-          <div class="week-controls">
-            <div class="week-actions">
-              <button id="previous-week" type="button" class="btn-secondary">Semana anterior</button>
-              <button id="next-week" type="button" class="btn-secondary">Semana siguiente</button>
+      <div class="dashboard-column dashboard-right">
+        <section class="panel">
+          <div class="panel-header">
+            <h2 id="week-title">Semana</h2>
+            <div class="week-controls">
+              <div class="week-actions">
+                <button id="previous-week" type="button" class="btn-secondary">Semana anterior</button>
+                <button id="next-week" type="button" class="btn-secondary">Semana siguiente</button>
+              </div>
+              <label for="assignee-filter" class="assignee-filter">
+                Ver tareas de
+                <select id="assignee-filter"></select>
+              </label>
             </div>
-            <label for="assignee-filter" class="assignee-filter">
-              Ver tareas de
-              <select id="assignee-filter"></select>
-            </label>
           </div>
-        </div>
-        <p id="week-task-count" class="muted"></p>
-        <div id="assignment-list" class="card-grid"></div>
-      </section>
+          <p id="week-task-count" class="muted"></p>
+          <div id="assignment-list" class="card-grid"></div>
+        </section>
+      </div>
 
-      <section class="panel">
-        <div class="panel-header">
-          <h2>Carga de trabajo (8 semanas)</h2>
-          <button id="reset-data" type="button" class="btn-danger">Reset histórico</button>
-        </div>
-        <div id="load-summary" class="summary"></div>
-        <h3>Mapa de calor</h3>
-        <div id="heatmap" class="heatmap"></div>
-      </section>
+      <div class="dashboard-column dashboard-left">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Carga de trabajo (8 semanas)</h2>
+            <button id="reset-data" type="button" class="btn-danger">Reset histórico</button>
+          </div>
+          <div id="load-summary" class="summary"></div>
+          <h3>Mapa de calor</h3>
+          <div id="heatmap" class="heatmap"></div>
+        </section>
 
-      <section class="panel">
-        <h2>Histórico de tareas</h2>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Semana</th>
-                <th>Tarea</th>
-                <th>Hecha por</th>
-                <th>Fecha</th>
-              </tr>
-            </thead>
-            <tbody id="history-body"></tbody>
-          </table>
-        </div>
-      </section>
+        <section class="panel">
+          <h2>Histórico de tareas</h2>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Semana</th>
+                  <th>Tarea</th>
+                  <th>Hecha por</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody id="history-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
     </main>
 
     <script type="module" src="./src/app.js"></script>

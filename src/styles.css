@@ -64,8 +64,13 @@ body {
 .layout {
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: 1fr;
   padding: 1rem;
+}
+
+.dashboard-column {
+  display: grid;
+  gap: 1rem;
 }
 
 .panel {
@@ -274,4 +279,20 @@ td {
 
 .empty-state {
   color: var(--muted);
+}
+
+@media (min-width: 1100px) {
+  .layout {
+    grid-template-columns: 30% 70%;
+    align-items: start;
+  }
+
+  .dashboard-left {
+    grid-column: 1;
+    grid-template-rows: auto auto;
+  }
+
+  .dashboard-right {
+    grid-column: 2;
+  }
 }
