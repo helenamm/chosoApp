@@ -4,6 +4,7 @@ import {
   getDefaultState,
   getWeekId,
   generateWeekAssignments,
+  addCustomTask,
   markAssignmentDone,
   calculateLoadSummary,
   buildHeatmapData,
@@ -124,6 +125,22 @@ test("generateWeekAssignments includes icon per task", () => {
   assert.ok(week0.length > 0);
   assert.equal(typeof week0[0].taskIcon, "string");
   assert.ok(week0[0].taskIcon.length > 0);
+});
+
+test("addCustomTask adds a new task used in weekly assignments", () => {
+  const state = getDefaultState();
+  const withCustom = addCustomTask(state, {
+    description: "Regar plantas",
+    icon: "🪴",
+    frequencyWeeks: 1,
+    points: 2,
+  });
+  const assignments = generateWeekAssignments(0, withCustom);
+  const custom = assignments.find((item) => item.taskName === "Regar plantas");
+
+  assert.ok(custom);
+  assert.equal(custom.taskIcon, "🪴");
+  assert.equal(custom.points, 2);
 });
 
 test("getHeatmapColor uses white -> green -> red scale", () => {

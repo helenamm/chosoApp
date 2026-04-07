@@ -276,6 +276,124 @@ button:disabled {
   overflow: auto;
 }
 
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(11, 20, 36, 0.5);
+  z-index: 30;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-content {
+  width: min(100%, 460px);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(16, 56, 102, 0.25);
+  padding: 1rem;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+.modal-close {
+  background: #e9eff8;
+  color: #103866;
+}
+
+.task-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.task-form-row {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.task-form-field {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.task-form-field input,
+.task-form-field select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.48rem 0.58rem;
+  font-weight: 600;
+  color: var(--text);
+  background: #fff;
+}
+
+.task-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(11, 20, 36, 0.5);
+  z-index: 30;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal-card {
+  width: min(100%, 460px);
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(16, 56, 102, 0.25);
+  padding: 1rem;
+}
+
+.task-form {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.task-form label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.task-form input {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.48rem 0.58rem;
+  font-weight: 600;
+  color: var(--text);
+  background: #fff;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

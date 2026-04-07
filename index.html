@@ -75,7 +75,10 @@
         </section>
 
         <section class="panel">
-          <h2>Histórico de tareas</h2>
+          <div class="panel-header">
+            <h2>Histórico de tareas</h2>
+            <button id="add-task-button" type="button" class="btn-secondary">Añadir tarea</button>
+          </div>
           <div class="table-wrapper">
             <table>
               <thead>
@@ -92,6 +95,37 @@
         </section>
       </div>
     </main>
+
+    <div id="task-modal" class="modal-overlay" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+        <h3 id="task-modal-title">Nueva tarea</h3>
+        <form id="add-task-form" class="task-form">
+          <label for="task-description-input">Descripción de tarea</label>
+          <input
+            id="task-description-input"
+            name="description"
+            type="text"
+            required
+            maxlength="100"
+            placeholder="Ej: Limpiar ventanas"
+          />
+
+          <label for="task-emoji-input">Emoji</label>
+          <input id="task-emoji-input" name="icon" type="text" maxlength="4" value="🧼" />
+
+          <label for="task-frequency-input">Frecuencia (semanas)</label>
+          <input id="task-frequency-input" name="frequencyWeeks" type="number" min="1" value="1" />
+
+          <label for="task-weight-input">Peso de la tarea</label>
+          <input id="task-weight-input" name="points" type="number" min="1" max="10" value="1" />
+
+          <div class="task-form-actions">
+            <button id="close-task-modal-button" type="button" class="btn-secondary">Cancelar</button>
+            <button type="submit" class="btn-primary">Guardar tarea</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script type="module" src="./src/app.js"></script>
   </body>

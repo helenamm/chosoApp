@@ -4,6 +4,7 @@ import {
   getWeekId,
   getWeekLabel,
   generateWeekAssignments,
+  addCustomTask,
   markAssignmentDone,
   getWeekCompletions,
   calculateLoadSummary,
@@ -22,6 +23,14 @@ const weekTaskCountEl = document.getElementById("week-task-count");
 const assignmentListEl = document.getElementById("assignment-list");
 const heatmapEl = document.getElementById("heatmap");
 const historyBodyEl = document.getElementById("history-body");
+const addTaskButton = document.getElementById("add-task-button");
+const addTaskModal = document.getElementById("task-modal");
+const closeAddTaskButton = document.getElementById("close-task-modal-button");
+const addTaskForm = document.getElementById("add-task-form");
+const taskDescriptionInput = document.getElementById("task-description-input");
+const taskEmojiInput = document.getElementById("task-emoji-input");
+const taskFrequencyInput = document.getElementById("task-frequency-input");
+const taskWeightInput = document.getElementById("task-weight-input");
 const previousWeekButton = document.getElementById("previous-week");
 const nextWeekButton = document.getElementById("next-week");
 const resetDataButton = document.getElementById("reset-data");
@@ -226,6 +235,21 @@ function renderHistory() {
   });
 }
 
+function openAddTaskModal() {
+  addTaskModal.classList.add("open");
+  addTaskModal.setAttribute("aria-hidden", "false");
+  taskDescriptionInput.focus();
+}
+
+function closeAddTaskModal() {
+  addTaskModal.classList.remove("open");
+  addTaskModal.setAttribute("aria-hidden", "true");
+  addTaskForm.reset();
+  taskEmojiInput.value = "🧼";
+  taskFrequencyInput.value = "1";
+  taskWeightInput.value = "1";
+}
+
 function renderAll() {
   renderAssignments();
   renderHeatmap();
@@ -245,6 +269,34 @@ nextWeekButton.addEventListener("click", () => {
 assigneeFilterEl.addEventListener("change", () => {
   selectedAssignee = assigneeFilterEl.value;
   renderAssignments();
+});
+
+addTaskButton.addEventListener("click", openAddTaskModal);
+closeAddTaskButton.addEventListener("click", closeAddTaskModal);
+addTaskModal.addEventListener("click", (event) => {
+  if (event.target === addTaskModal) {
+    closeAddTaskModal();
+  }
+});
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && addTaskModal.classList.contains("open")) {
+    closeAddTaskModal();
+  }
+});
+addTaskForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const updatedState = addCustomTask(state, {
+    description: taskDescriptionInput.value,
+    icon: taskEmojiInput.value,
+    frequencyWeeks: taskFrequencyInput.value,
+    points: taskWeightInput.value,
+  });
+  if (updatedState !== state) {
+    state.customTasks = updatedState.customTasks;
+    saveState(state);
+    closeAddTaskModal();
+    renderAll();
+  }
 });
 
 resetDataButton.addEventListener("click", () => {

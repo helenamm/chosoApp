@@ -103,6 +103,7 @@ function getDefaultState() {
   return {
     members: DEFAULT_MEMBERS,
     history: [],
+    customTasks: [],
   };
 }
 
@@ -118,6 +119,9 @@ function loadState(storage = globalThis.localStorage) {
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed.history) || !Array.isArray(parsed.members)) {
       return getDefaultState();
+    }
+    if (!Array.isArray(parsed.customTasks)) {
+      parsed.customTasks = [];
     }
     return parsed;
   } catch {
@@ -144,9 +148,10 @@ function getAssignee(members, baseIndex, taskIndex, occurrenceIndex = 0) {
 function generateWeekAssignments(weekOffset = 0, state = getDefaultState()) {
   const members = state.members.length ? state.members : DEFAULT_MEMBERS;
   const baseIndex = ((weekOffset % members.length) + members.length) % members.length;
+  const allTasks = [...TASK_DEFINITIONS, ...(state.customTasks || [])];
 
   const assignments = [];
-  TASK_DEFINITIONS.forEach((task, taskIndex) => {
+  allTasks.forEach((task, taskIndex) => {
     if (!shouldTaskAppear(task, weekOffset)) {
       return;
     }
@@ -167,6 +172,40 @@ function generateWeekAssignments(weekOffset = 0, state = getDefaultState()) {
     }
   });
   return assignments;
+}
+
+function createCustomTaskId(description) {
+  const slug = description
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 30);
+  return `custom_${slug || "tarea"}_${Date.now().toString(36)}`;
+}
+
+function addCustomTask(state, payload) {
+  const description = String(payload.description || "").trim();
+  if (!description) {
+    return state;
+  }
+  const frequencyWeeks = Number.parseInt(payload.frequencyWeeks, 10);
+  const points = Number.parseInt(payload.points, 10);
+  const icon = String(payload.icon || "").trim() || "🧼";
+
+  const customTask = {
+    id: createCustomTaskId(description),
+    name: description,
+    description,
+    icon,
+    frequencyWeeks: Number.isFinite(frequencyWeeks) && frequencyWeeks > 0 ? frequencyWeeks : 1,
+    points: Number.isFinite(points) && points > 0 ? points : 1,
+  };
+  return {
+    ...state,
+    customTasks: [...(state.customTasks || []), customTask],
+  };
 }
 
 function markAssignmentDone(state, payload) {
@@ -285,6 +324,7 @@ export {
   loadState,
   saveState,
   generateWeekAssignments,
+  addCustomTask,
   markAssignmentDone,
   getWeekCompletions,
   calculateLoadSummary,
