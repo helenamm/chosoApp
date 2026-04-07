@@ -88,3 +88,12 @@ test("buildHeatmapData returns one cell per week", () => {
   assert.equal(heatmap[0].pointsByWeek.length, 8);
   assert.equal(heatmap[1].pointsByWeek.length, 8);
 });
+
+test("generateWeekAssignments includes icon per task", () => {
+  const state = getDefaultState();
+  const week0 = generateWeekAssignments(0, state);
+
+  assert.ok(week0.length > 0);
+  assert.equal(typeof week0[0].taskIcon, "string");
+  assert.ok(week0[0].taskIcon.length > 0);
+});

@@ -112,8 +112,27 @@ body {
 }
 
 .card h3 {
-  margin: 0 0 0.5rem;
+  margin: 0;
   font-size: 1rem;
+}
+
+.card-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.5rem;
+}
+
+.task-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 0.45rem;
+  background: #eaf2ff;
+  color: #245cb5;
+  font-size: 0.95rem;
+  line-height: 1;
 }
 
 .card-description {
