@@ -131,6 +131,27 @@ body {
   font-size: 0.9rem;
 }
 
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-actions label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.card-actions select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text);
+  padding: 0.42rem 0.55rem;
+  font-weight: 600;
+}
+
 button {
   border: 0;
   border-radius: 8px;

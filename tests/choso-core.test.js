@@ -48,6 +48,33 @@ test("markAssignmentDone avoids duplicate completion for same assignee", () => {
   assert.equal(withTwo.history.length, 1);
 });
 
+test("markAssignmentDone allows completion by different member", () => {
+  const state = getDefaultState();
+  const weekId = getWeekId(0, new Date("2026-01-05T12:00:00Z"));
+  const assignment = generateWeekAssignments(0, state)[0];
+
+  const withHelena = markAssignmentDone(state, {
+    weekId,
+    assignmentId: assignment.assignmentId,
+    taskId: assignment.taskId,
+    taskName: assignment.taskName,
+    points: assignment.points,
+    completedBy: "helena",
+    completedByName: "Helena",
+  });
+  const withAbri = markAssignmentDone(withHelena, {
+    weekId,
+    assignmentId: assignment.assignmentId,
+    taskId: assignment.taskId,
+    taskName: assignment.taskName,
+    points: assignment.points,
+    completedBy: "abri",
+    completedByName: "Abri",
+  });
+
+  assert.equal(withAbri.history.length, 2);
+});
+
 test("calculateLoadSummary aggregates points and percentages", () => {
   const state = getDefaultState();
   const weekId = getWeekId(0, new Date("2026-01-05T12:00:00Z"));

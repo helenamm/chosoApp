@@ -14,6 +14,7 @@ import {
 const state = loadState();
 let selectedWeekOffset = 0;
 let selectedAssignee = "all";
+const selectedCompleterByAssignment = {};
 
 const weekTitleEl = document.getElementById("week-title");
 const weekTaskCountEl = document.getElementById("week-task-count");
@@ -58,6 +59,8 @@ function renderAssignments() {
       ? allAssignments
       : allAssignments.filter((assignment) => assignment.assignedTo === selectedAssignee);
   const doneKeys = getCompletedAssignmentKeys(weekId);
+  const completions = getWeekCompletions(state, weekId);
+  const membersById = new Map(state.members.map((member) => [member.id, member]));
 
   weekTitleEl.textContent = `Semana ${weekLabel}`;
   weekTaskCountEl.textContent =
@@ -77,9 +80,16 @@ function renderAssignments() {
   }
 
   assignments.forEach((assignment) => {
-    const isDone = doneKeys.has(`${assignment.assignmentId}::${assignment.assignedTo}`);
+    const assignmentCompletions = completions.filter(
+      (entry) => entry.assignmentId === assignment.assignmentId,
+    );
+    const selectedCompleter =
+      selectedCompleterByAssignment[assignment.assignmentId] || assignment.assignedTo;
+    const isDoneForSelectedCompleter = doneKeys.has(
+      `${assignment.assignmentId}::${selectedCompleter}`,
+    );
     const item = document.createElement("article");
-    item.className = `card ${isDone ? "done" : ""}`;
+    item.className = `card ${assignmentCompletions.length > 0 ? "done" : ""}`;
 
     const title = document.createElement("h3");
     title.className = "card-title";
@@ -93,20 +103,43 @@ function renderAssignments() {
     meta.className = "card-meta";
     meta.textContent = `Le toca: ${assignment.assignedToName} · Peso: ${assignment.points}`;
 
+    const actionRow = document.createElement("div");
+    actionRow.className = "card-actions";
+
+    const completerSelect = document.createElement("select");
+    completerSelect.className = "card-completer";
+    completerSelect.setAttribute("aria-label", "Persona que completó la tarea");
+
+    state.members.forEach((member) => {
+      const option = document.createElement("option");
+      option.value = member.id;
+      option.textContent = member.name;
+      completerSelect.appendChild(option);
+    });
+    completerSelect.value = selectedCompleter;
+    completerSelect.addEventListener("change", () => {
+      selectedCompleterByAssignment[assignment.assignmentId] = completerSelect.value;
+      renderAssignments();
+    });
+
     const button = document.createElement("button");
     button.type = "button";
     button.className = "btn-primary";
-    button.disabled = isDone;
-    button.textContent = isDone ? "Completada" : "Marcar como hecha";
+    button.disabled = isDoneForSelectedCompleter;
+    button.textContent = isDoneForSelectedCompleter
+      ? "Completada"
+      : `Marcar (${membersById.get(selectedCompleter)?.name || "persona"})`;
     button.addEventListener("click", () => {
+      const completerId = completerSelect.value;
+      const completer = membersById.get(completerId);
       const updated = markAssignmentDone(state, {
         weekId,
         assignmentId: assignment.assignmentId,
         taskId: assignment.taskId,
         taskName: assignment.taskName,
         points: assignment.points,
-        completedBy: assignment.assignedTo,
-        completedByName: assignment.assignedToName,
+        completedBy: completerId,
+        completedByName: completer?.name || "Persona",
       });
       if (updated !== state) {
         state.history = updated.history;
@@ -115,7 +148,18 @@ function renderAssignments() {
       }
     });
 
-    item.append(title, details, meta, button);
+    actionRow.append(completerSelect, button);
+
+    const completionInfo = document.createElement("p");
+    completionInfo.className = "card-completion-info";
+    completionInfo.textContent = assignmentCompletions.length
+      ? `Registrada por: ${assignmentCompletions
+          .map((entry) => entry.completedByName)
+          .filter((value, index, array) => array.indexOf(value) === index)
+          .join(", ")}`
+      : "Sin registro aún.";
+
+    item.append(title, details, meta, actionRow, completionInfo);
     assignmentListEl.appendChild(item);
   });
 }
