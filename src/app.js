@@ -83,15 +83,7 @@ function renderAssignments() {
 
     const title = document.createElement("h3");
     title.className = "card-title";
-
-    const icon = document.createElement("span");
-    icon.className = "task-icon";
-    icon.setAttribute("aria-hidden", "true");
-    icon.textContent = assignment.taskIcon;
-
-    const titleText = document.createElement("span");
-    titleText.textContent = assignment.taskName;
-    title.append(icon, titleText);
+    title.textContent = `${assignment.taskIcon || "🧼"} ${assignment.taskName}`;
 
     const details = document.createElement("p");
     details.className = "card-description";
